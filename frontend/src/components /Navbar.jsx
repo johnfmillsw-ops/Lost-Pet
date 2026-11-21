@@ -1,46 +1,54 @@
 
 import React from "react";
-import { NavLink, Link } from "react-router-dom";
 import "./Navbar.css";
 
-export default function Navbar() {
-  const links = [
-    { label: "Home", path: "/" },
-    { label: "About", path: "/about" },
-    { label: "Donations", path: "/donations" },
-    { label: "Search for Lost Pet", path: "/search" },
-    { label: "Upload Lost Pet", path: "/upload" },
-  ];
+const links = [
+  ["Home", "/"],
+  ["About", "/about"],
+  ["Donations", "/donations"],
+  ["Search for Lost Pet", "/search"],
+  ["Upload Lost Pet", "/upload"],
+];
+
+export default function Navbar({ signedIn = false, onLogout }) {
+  const current = window.location.hash.slice(1) || "/";
 
   return (
-    <header className="navbar">
-      <Link to="/" className="navbar-logo">
+    <div className="navbar">
+      <a href="#/" className="navbar-logo">
         🐾 Lost-Pet
-      </Link>
+      </a>
 
       <nav className="navbar-links" aria-label="Main navigation">
-        {links.map((link) => (
-          <NavLink
-            key={link.path}
-            to={link.path}
-            end={link.path === "/"}
-            className={({ isActive }) =>
-              `nav-link ${isActive ? "active" : ""}`
+        {links.map(([label, path]) => (
+          <a
+            key={path}
+            href={"#" + path}
+            className={
+              "nav-link " + (current === path ? "active" : "")
             }
           >
-            {link.label}
-          </NavLink>
+            {label}
+          </a>
         ))}
       </nav>
 
       <div className="navbar-auth">
-        <Link to="/login" className="login-btn">
-          Log In
-        </Link>
-        <Link to="/register" className="register-btn">
-          Create Account
-        </Link>
+        {signedIn ? (
+          <button className="secondary" onClick={onLogout}>
+            Sign out
+          </button>
+        ) : (
+          <>
+            <a href="#/login" className="login-btn">
+              Log In
+            </a>
+            <a href="#/register" className="register-btn">
+              Create Account
+            </a>
+          </>
+        )}
       </div>
-    </header>
+    </div>
   );
 }
