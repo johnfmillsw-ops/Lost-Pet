@@ -22,7 +22,9 @@ export default function App() {
 
   useEffect(() => {
     function handleNavigation() {
-      setPage(window.location.hash.slice(1) || "/");
+      setPage(
+        window.location.hash.slice(1) || "/"
+      );
     }
 
     window.addEventListener(
@@ -39,7 +41,11 @@ export default function App() {
   }, []);
 
   function handleLogin(newToken) {
-    localStorage.setItem("pet_token", newToken);
+    localStorage.setItem(
+      "pet_token",
+      newToken
+    );
+
     setToken(newToken);
   }
 
@@ -61,25 +67,33 @@ export default function App() {
         return <Donations />;
 
       case "/search":
-        return <SearchPets token={token} />;
+        return <SearchPets />;
 
       case "/upload":
         return <UploadPet token={token} />;
 
       case "/login":
-        return token
-          ? <Home />
-          : <Login onLogin={handleLogin} />;
+        return token ? (
+          <Home />
+        ) : (
+          <Login onLogin={handleLogin} />
+        );
 
       case "/register":
-        return token
-          ? <Home />
-          : <Register onLogin={handleLogin} />;
+        return token ? (
+          <Home />
+        ) : (
+          <Register onLogin={handleLogin} />
+        );
 
       default:
         return (
           <section>
             <h2>Page Not Found</h2>
+            <p>
+              The page you're looking for
+              doesn't exist.
+            </p>
             <a href="#/">Return Home</a>
           </section>
         );
@@ -93,7 +107,9 @@ export default function App() {
         onLogout={handleLogout}
       />
 
-      <main>{renderPage()}</main>
+      <main>
+        {renderPage()}
+      </main>
     </>
   );
 }
